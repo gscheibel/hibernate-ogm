@@ -19,6 +19,8 @@ import org.hibernate.ogm.dialect.GridDialect;
 import org.hibernate.ogm.grid.AssociationKey;
 import org.hibernate.ogm.grid.EntityKey;
 import org.hibernate.ogm.grid.RowKey;
+import org.hibernate.ogm.service.impl.LuceneBasedQueryParserService;
+import org.hibernate.ogm.service.impl.QueryParserService;
 import org.hibernate.ogm.util.impl.Log;
 import org.hibernate.ogm.util.impl.LoggerFactory;
 import org.hibernate.service.spi.Startable;
@@ -54,6 +56,11 @@ public class MapBasedDatastoreProvider implements DatastoreProvider, Startable, 
 	@Override
 	public Class<? extends GridDialect> getDefaultDialect() {
 		return HashMapDialect.class;
+	}
+
+	@Override
+	public Class<? extends QueryParserService> getDefaultQueryParser() {
+		return LuceneBasedQueryParserService.class;
 	}
 
 	@Override

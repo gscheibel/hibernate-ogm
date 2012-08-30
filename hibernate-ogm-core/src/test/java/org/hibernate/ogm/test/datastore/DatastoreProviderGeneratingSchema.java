@@ -21,6 +21,8 @@
 package org.hibernate.ogm.test.datastore;
 
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.lock.LockingStrategy;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -37,12 +39,15 @@ import org.hibernate.ogm.dialect.GridDialect;
 import org.hibernate.ogm.grid.AssociationKey;
 import org.hibernate.ogm.grid.EntityKey;
 import org.hibernate.ogm.grid.RowKey;
+import org.hibernate.ogm.service.impl.LuceneBasedQueryParserService;
+import org.hibernate.ogm.service.impl.QueryParserService;
 import org.hibernate.ogm.type.GridType;
 import org.hibernate.persister.entity.Lockable;
 import org.hibernate.type.Type;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Example of datastore provider using metadata to generate some hypothetical
@@ -56,6 +61,10 @@ public class DatastoreProviderGeneratingSchema implements DatastoreProvider, Sta
 		return Dialect.class;
 	}
 
+	@Override
+	public Class<? extends QueryParserService> getDefaultQueryParser() {
+		return QueryParser.class;
+	}
 	@Override
 	public void start(Configuration configuration, SessionFactoryImplementor factory) {
 		Iterator<Table> tables = configuration.getTableMappings();
@@ -80,6 +89,13 @@ public class DatastoreProviderGeneratingSchema implements DatastoreProvider, Sta
 	public void stop() {
 		//not tested
 		throw new RuntimeException("STOPPED!");
+	}
+
+	public static class QueryParser implements QueryParserService {
+		@Override
+		public Query getParsedQueryExecutor(Session session, String queryString, Map<String, Object> namedParameters) {
+			return null;
+		}
 	}
 
 	public static class Dialect implements GridDialect {

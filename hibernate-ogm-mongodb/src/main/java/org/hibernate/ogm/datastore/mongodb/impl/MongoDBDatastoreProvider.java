@@ -27,11 +27,13 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 import org.hibernate.ogm.datastore.mongodb.AssociationStorage;
 import org.hibernate.ogm.datastore.mongodb.Environment;
+import org.hibernate.ogm.datastore.mongodb.query.MongoDBQueryParserService;
 import org.hibernate.ogm.datastore.spi.DatastoreProvider;
 import org.hibernate.ogm.dialect.GridDialect;
 import org.hibernate.ogm.dialect.mongodb.MongoDBDialect;
 import org.hibernate.ogm.logging.mongodb.impl.Log;
 import org.hibernate.ogm.logging.mongodb.impl.LoggerFactory;
+import org.hibernate.ogm.service.impl.QueryParserService;
 import org.hibernate.service.spi.Configurable;
 import org.hibernate.service.spi.Startable;
 import org.hibernate.service.spi.Stoppable;
@@ -82,6 +84,11 @@ public class MongoDBDatastoreProvider implements DatastoreProvider, Startable, S
 	@Override
 	public Class<? extends GridDialect> getDefaultDialect() {
 		return MongoDBDialect.class;
+	}
+
+	@Override
+	public Class<? extends QueryParserService> getDefaultQueryParser() {
+		return MongoDBQueryParserService.class;
 	}
 
 	@Override

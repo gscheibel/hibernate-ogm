@@ -52,7 +52,7 @@ import org.hibernate.ogm.service.impl.QueryParserService;
 public class OgmQuery extends AbstractQueryImpl {
 
 	private final Session session;
-	private final QueryParserService queryParserService;
+	protected final QueryParserService queryParserService;
 
 	public OgmQuery(String queryString, FlushMode flushMode, OgmSession session,
 			ParameterMetadata parameterMetadata, QueryParserService queryParserService) {

@@ -30,6 +30,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.TransactionException;
 import org.hibernate.hql.internal.ast.QuerySyntaxException;
 import org.hibernate.ogm.datastore.impl.DatastoreProviderInitiator;
+import org.hibernate.ogm.service.impl.QueryParserService;
+
 import org.jboss.logging.BasicLogger;
 import org.jboss.logging.Cause;
 import org.jboss.logging.LogMessage;
@@ -120,4 +122,13 @@ public interface Log extends BasicLogger {
 	@Message(id = 24, value = "Syntax error in query: [%1$s]")
 	HibernateException querySyntaxException(@Cause QuerySyntaxException qse, String queryString);
 
+	@Message(id = 25, value = "Unable to instantiate [%1$s]")
+	HibernateException unableToInstantiateQueryParserService(Class<?> qps, @Cause Exception e);
+
+	@Message(id = 26, value = "[%1$s] does not accept 3 parameters (ServiceRegistryImplementor, Map)")
+	HibernateException queryParserServiceHasNoProperConstructor(Class<? extends QueryParserService> qpsClass);
+
+	@LogMessage(level = INFO)
+	@Message(id = 27, value = "The query parser used is [%1$s]")
+	void usingQueryParserService(String qpsClass);
 }

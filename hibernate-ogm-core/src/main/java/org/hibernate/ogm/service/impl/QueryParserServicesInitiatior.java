@@ -20,18 +20,25 @@
  */
 package org.hibernate.ogm.service.impl;
 
+import java.lang.reflect.Constructor;
 import java.util.Map;
 
+import org.hibernate.Session;
+import org.hibernate.ogm.datastore.spi.DatastoreProvider;
+import org.hibernate.ogm.util.impl.Log;
+import org.hibernate.ogm.util.impl.LoggerFactory;
 import org.hibernate.service.spi.BasicServiceInitiator;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
 
 
 /**
- * @author Sanne Grinovero <sanne@hibernate.org> (C) 2012 Red Hat Inc.
+ * @author Sanne Grinovero <sanne@hibernate.org> (C) 2012 Red Hat Inc
+ * @author Guillaume Scheibel <guillaume.scheibel@gmail.com>
  */
 class QueryParserServicesInitiatior extends OptionalServiceInitiator<QueryParserService> {
 
 	public static final BasicServiceInitiator INSTANCE = new QueryParserServicesInitiatior();
+	private static final Log log = LoggerFactory.make();
 
 	@Override
 	public Class<QueryParserService> getServiceInitiated() {
@@ -41,7 +48,28 @@ class QueryParserServicesInitiatior extends OptionalServiceInitiator<QueryParser
 	@Override
 	protected QueryParserService buildServiceInstance(Map configurationValues, ServiceRegistryImplementor registry) {
 		// TODO pick a service implementation by configuration options?
-		return new LuceneBasedQueryParserService( registry, configurationValues );
+		final DatastoreProvider provider = registry.getService( DatastoreProvider.class );
+		Class<? extends QueryParserService> qpsClass = provider.getDefaultQueryParser();
+		try {
+			Constructor injector = null;
+			for ( int i = 0; i < qpsClass.getConstructors().length && injector == null; i++ ) {
+				Constructor constructor = qpsClass.getConstructors()[i];
+				Class[] parameterTypes = constructor.getParameterTypes();
+				if ( parameterTypes.length == 2 && ServiceRegistryImplementor.class.isAssignableFrom( parameterTypes[0] )
+						&& Map.class.isAssignableFrom( parameterTypes[1] )) {
+					injector = constructor;
+				}
+			}
+			if ( injector == null ) {
+				log.queryParserServiceHasNoProperConstructor( qpsClass );
+			}
+			QueryParserService queryParserService = (QueryParserService) injector.newInstance( registry, configurationValues );
+			log.usingQueryParserService( qpsClass.getCanonicalName() );
+			return queryParserService;
+		}
+		catch ( Exception e ) {
+			throw log.unableToInstantiateQueryParserService( qpsClass, e );
+		}
 	}
 
 	@Override

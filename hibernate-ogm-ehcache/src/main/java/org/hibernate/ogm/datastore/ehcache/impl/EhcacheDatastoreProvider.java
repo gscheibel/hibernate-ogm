@@ -37,6 +37,8 @@ import net.sf.ehcache.transaction.xa.EhcacheXAResource;
 import org.hibernate.ogm.datastore.spi.DatastoreProvider;
 import org.hibernate.ogm.dialect.GridDialect;
 import org.hibernate.ogm.dialect.ehcache.EhcacheDialect;
+import org.hibernate.ogm.service.impl.LuceneBasedQueryParserService;
+import org.hibernate.ogm.service.impl.QueryParserService;
 import org.hibernate.service.jta.platform.spi.JtaPlatform;
 import org.hibernate.service.spi.Configurable;
 import org.hibernate.service.spi.ServiceRegistryAwareService;
@@ -64,6 +66,11 @@ public class EhcacheDatastoreProvider implements DatastoreProvider, Startable, S
 	@Override
 	public Class<? extends GridDialect> getDefaultDialect() {
 		return EhcacheDialect.class;
+	}
+
+	@Override
+	public Class<? extends QueryParserService> getDefaultQueryParser() {
+		return LuceneBasedQueryParserService.class;
 	}
 
 	@Override

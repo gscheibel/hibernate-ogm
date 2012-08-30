@@ -30,6 +30,8 @@ import org.hibernate.ogm.datastore.spi.DatastoreProvider;
 import org.hibernate.ogm.datastore.spi.DefaultDatastoreNames;
 import org.hibernate.ogm.dialect.GridDialect;
 import org.hibernate.ogm.dialect.infinispan.InfinispanDialect;
+import org.hibernate.ogm.service.impl.LuceneBasedQueryParserService;
+import org.hibernate.ogm.service.impl.QueryParserService;
 import org.hibernate.ogm.util.impl.Log;
 import org.hibernate.ogm.util.impl.LoggerFactory;
 import org.hibernate.ogm.util.impl.StringHelper;
@@ -68,6 +70,11 @@ public class InfinispanDatastoreProvider implements DatastoreProvider, Startable
 	@Override
 	public Class<? extends GridDialect> getDefaultDialect() {
 		return InfinispanDialect.class;
+	}
+
+	@Override
+	public Class<? extends QueryParserService> getDefaultQueryParser() {
+		return LuceneBasedQueryParserService.class;
 	}
 
 	/**
