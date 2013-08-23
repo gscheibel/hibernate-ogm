@@ -35,6 +35,8 @@ public enum GridDialectType {
 		}
 	},
 
+	POLYGLOT( "org.hibernate.ogm.test.utils.PolyglotTestHelper" ),
+
 	INFINISPAN( "org.hibernate.ogm.test.utils.InfinispanTestHelper" ),
 
 	EHCACHE( "org.hibernate.ogm.test.utils.EhcacheTestHelper" ),
@@ -68,4 +70,7 @@ public enum GridDialectType {
 				" is not one of the TestableGridDialect implementation known to " + GridDialectType.class );
 	}
 
+	public String getTestHelperClassName() {
+		return testHelperClassName;
+	}
 }
