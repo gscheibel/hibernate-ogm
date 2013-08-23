@@ -34,7 +34,7 @@
   oriented datastore written in C++ with strong emphasis on ease of
   use.</para>
 
-  <section>
+  <section id="ogm-mongodb-configuration">
     <title>Configuring MongoDB</title>
 
     <para>This implementation is based upon the MongoDB Java driver, currently

@@ -155,6 +155,11 @@
         <para>a MongoDB based datastore provider to persist data in a MongoDB
         database</para>
       </listitem>
+
+      <listitem>
+        <para>a MongoDB based datastore provider to persist data in a MongoDB
+        database</para>
+      </listitem>
     </itemizedlist>
 
     <para>To implement JP-QL queries, Hibernate OGM parses the JP-QL string

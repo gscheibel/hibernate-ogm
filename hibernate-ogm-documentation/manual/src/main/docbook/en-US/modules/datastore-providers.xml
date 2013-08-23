@@ -52,6 +52,10 @@
       <para>MongoDB: stores data into <ulink
       url="http://www.mongodb.org">MongoDB</ulink> (document store)</para>
     </listitem>
+
+    <listitem>
+      <para>Polyglot: store separately entities and associations into two different datastores</para>
+    </listitem>
   </itemizedlist>
 
   <para>More are planned, if you are interested, come talk to us (see <xref
@@ -100,6 +104,11 @@
       <para><literal>mongodb</literal>: stores data into <ulink
       url="http://www.mongodb.org">MongoDB</ulink> (document store)</para>
     </listitem>
+
+    <listitem>
+      <para><literal>polyglot</literal>: stores entities and associations
+      in two separate datastores.</para>
+    </listitem>
   </itemizedlist>
 
   <para>You also need to add the relevant Hibernate OGM module in your
@@ -113,8 +122,8 @@
 </programlisting>
 
   <para>We have respectively <literal>hibernate-ogm-infinispan</literal>,
-  <literal>hibernate-ogm-ehcache</literal> and
-  <literal>hibernate-ogm-mongodb</literal>. The map datastore is included in
+  <literal>hibernate-ogm-ehcache</literal>, <literal>hibernate-ogm-mongodb</literal>
+  and <literal>hibernate-ogm-polyglot</literal>. The map datastore is included in
   the Hibernate OGM engine module.</para>
 
   <para>By default, a datastore provider chooses the best grid dialect
@@ -129,4 +138,6 @@
   <xi:include href="ehcache.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
   <xi:include href="mongodb.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+  <xi:include href="polyglot.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </chapter>

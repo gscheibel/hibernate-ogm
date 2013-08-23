@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright 2013 Red Hat Inc. and/or its affiliates and other contributors
+  ~ as indicated by the @authors tag. All rights reserved.
+  ~ See the copyright.txt in the distribution for a
+  ~ full listing of individual contributors.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use,
+  ~ modify, copy, or redistribute it subject to the terms and conditions
+  ~ of the GNU Lesser General Public License, v. 2.1.
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT A
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  ~ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+  ~ You should have received a copy of the GNU Lesser General Public License,
+  ~ v.2.1 along with this distribution; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ~ MA  02110-1301, USA.
+  -->
+<!--
+    @author Guillaume Scheibel <guillaume.scheibel@gmail.com>
+-->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+        "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+        <!ENTITY % BOOK_ENTITIES SYSTEM "../ogm.ent">
+        %BOOK_ENTITIES;
+        ]>
+<section>
+    <title>Polyglot</title>
+
+    <para>The polyglot module is able to split the store in two. It stores entities in one datastore and associations
+    in another one. It can be useful if there is an already existing data structure on a MongoDB instance (for example)
+    and you want to map it and create associations without touching the MongoDB database.</para>
+
+    <section>
+      <title>Configuration</title>
+
+      <para>The following properties are available to configure the Polyglot module</para>
+
+      <table>
+        <title>Polyglot module configuration properties</title>
+
+        <tgroup cols="2">
+          <colspec colwidth="30%"/>
+
+          <colspec colwidth="70%"/>
+
+          <thead>
+            <row>
+              <entry>Property</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>hibernate.ogm.datastore.provider</entry>
+
+              <entry>To use  the Polyglot module, this property must
+              be set to <literal>POLYGLOT</literal></entry>
+            </row>
+
+            <row>
+              <entry>hibernate.ogm.polyglot.entity.provider</entry>
+
+              <entry>The name of the OGM module (and underlying datastore)
+              used to store entities. The following values are possible:
+              <literal>MONGODB</literal>, <literal>EHCACHE</literal> or
+              <literal>INFINISPAN</literal></entry>
+            </row>
+
+            <row>
+              <entry>hibernate.ogm.polyglot.association.provider</entry>
+
+              <entry>The name of the OGM module (and underlying datastore)
+              used to store associations. The following values are possible:
+              <literal>MONGODB</literal>, <literal>EHCACHE</literal> or
+              <literal>INFINISPAN</literal></entry>
+            </row>
+          </tbody>
+        </tgroup>
+     </table>
+
+      <para>For specific configurations like hostname, port, etc. you can refer
+      to the underlying module configuration:
+
+        <itemizedlist>
+          <listitem>
+            <para>Infinispan: <xref linkend="ogm-infinispan-configuration"/></para>
+          </listitem>
+          <listitem>
+            <para>Ehcache: <xref linkend="ogm-ehcache-configuration"/></para>
+          </listitem>
+          <listitem>
+            <para>MongoDB: <xref linkend="ogm-mongodb-configuration"/></para>
+          </listitem>
+       </itemizedlist>
+
+      </para>
+
+      <para>For example, if you want to store entities into MongoDB and associations into Infinispan
+      you will have to provider this kind of configurations</para>
+
+      <example>
+        <title>Using MongoDB and Infinispan: configuration file</title>
+
+        <programlisting language="XML" role="XML">&lt;?xml version="1.0"?&gt;
+&lt;persistence xmlns="http://java.sun.com/xml/ns/persistence"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+                version="2.0"&gt;
+
+    &lt;persistence-unit name="org.hibernate.ogm.tutorial.jpa" transaction-type="JTA"&gt;
+        &lt;provider&gt;org.hibernate.ogm.jpa.HibernateOgmPersistence&lt;/provider&gt;
+        &lt;properties&gt;
+            &lt;!-- Polyglot module configurations --&gt;
+            &lt;property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform" /&gt;
+            &lt;property name="hibernate.ogm.polyglot.entity.provider" value="MONOGDB" /&gt;
+            &lt;property name="hibernate.ogm.polyglot.association.provider" value="INFINISPAN" /&gt;
+
+            &lt;!-- Configuration to access to the MongoDB server --&gt;
+            &lt;property name="hibernate.ogm.mongodb.host" value="localhost" /&gt;
+            &lt;property name="hibernate.ogm.mongodb.port" value="27017" /&gt;
+            &lt;property name="hibernate.ogm.mongodb.database" value="ogm_database" /&gt;
+
+            &lt;!-- Configuration for Infinispan --&gt;
+            &lt;property name="hibernate.ogm.infinispan.configuration_resourcename" value="infinispan.xml" /&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</programlisting>
+      </example>
+  </section>
+</section>

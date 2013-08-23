@@ -225,6 +225,11 @@
         <listitem>
           <para>JPA and native Hibernate ORM API support</para>
         </listitem>
+
+        <lisitem>
+          <para>split storage in two. One datastore for entities and another
+          one for associations</para>
+        </lisitem>
       </itemizedlist>
     </section>
 
