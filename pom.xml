@@ -43,6 +43,7 @@
         <module>hibernate-ogm-mongodb</module>
         <module>hibernate-ogm-modules</module>
         <module>hibernate-ogm-integrationtest</module>
+        <module>hibernate-ogm-polyglot</module>
     </modules>
 
     <prerequisites>
@@ -281,8 +282,29 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>hibernate-ogm-infinispan</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>hibernate-ogm-mongodb</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>hibernate-ogm-mongodb</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>hibernate-ogm-ehcache</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
             </dependency>
 
             <!-- Logging -->
