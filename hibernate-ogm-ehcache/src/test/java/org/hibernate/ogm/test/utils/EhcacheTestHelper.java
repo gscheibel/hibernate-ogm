@@ -37,6 +37,24 @@ import static org.hibernate.ogm.datastore.spi.DefaultDatastoreNames.ENTITY_STORE
  * @author Alex Snaps
  */
 public class EhcacheTestHelper implements TestableGridDialect {
+
+	private EhcacheDatastoreProvider datastoreProvider;
+
+	public EhcacheTestHelper(EhcacheDatastoreProvider provider) {
+		this.datastoreProvider = provider;
+	}
+
+	public EhcacheTestHelper() {
+		super();
+	}
+
+	public EhcacheDatastoreProvider getDatastoreProvider(SessionFactory sessionFactory) {
+		if ( datastoreProvider == null ) {
+			return getProvider( sessionFactory );
+		}
+		return datastoreProvider;
+	}
+
 	@Override
 	public boolean assertNumberOfEntities(int numberOfEntities, SessionFactory sessionFactory) {
 		return getEntityCache( sessionFactory ).getSize() == numberOfEntities;
@@ -52,8 +70,8 @@ public class EhcacheTestHelper implements TestableGridDialect {
 		return (Map) getEntityCache( sessionFactory ).get( key ).getValue();
 	}
 
-	private static Cache getEntityCache(SessionFactory sessionFactory) {
-		EhcacheDatastoreProvider castProvider = getProvider( sessionFactory );
+	private Cache getEntityCache(SessionFactory sessionFactory) {
+		EhcacheDatastoreProvider castProvider = getDatastoreProvider( sessionFactory );
 		return castProvider.getCacheManager().getCache( ENTITY_STORE );
 	}
 
@@ -66,8 +84,8 @@ public class EhcacheTestHelper implements TestableGridDialect {
 		return EhcacheDatastoreProvider.class.cast( provider );
 	}
 
-	private static Cache getAssociationCache(SessionFactory sessionFactory) {
-		EhcacheDatastoreProvider castProvider = getProvider( sessionFactory );
+	private Cache getAssociationCache(SessionFactory sessionFactory) {
+		EhcacheDatastoreProvider castProvider = getDatastoreProvider( sessionFactory );
 		return castProvider.getCacheManager().getCache( ASSOCIATION_STORE );
 	}
 

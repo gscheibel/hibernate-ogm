@@ -37,6 +37,23 @@ import org.infinispan.Cache;
  */
 public class InfinispanTestHelper implements TestableGridDialect {
 
+	private InfinispanDatastoreProvider datastoreProvider;
+
+	public InfinispanTestHelper(InfinispanDatastoreProvider provider) {
+		datastoreProvider = provider;
+	}
+
+	public InfinispanTestHelper() {
+		super();
+	}
+
+	private InfinispanDatastoreProvider getDatastoreProvider(SessionFactory sessionFactory) {
+		if ( datastoreProvider == null ) {
+			return getProvider( sessionFactory );
+		}
+		return datastoreProvider;
+	}
+
 	@Override
 	public boolean assertNumberOfEntities(int numberOfEntities, SessionFactory sessionFactory) {
 		return getEntityCache( sessionFactory ).size() == numberOfEntities;
@@ -52,8 +69,8 @@ public class InfinispanTestHelper implements TestableGridDialect {
 		return (Map) getEntityCache( sessionFactory ).get( key );
 	}
 
-	private static Cache getEntityCache(SessionFactory sessionFactory) {
-		InfinispanDatastoreProvider castProvider = getProvider( sessionFactory );
+	private Cache getEntityCache(SessionFactory sessionFactory) {
+		InfinispanDatastoreProvider castProvider = getDatastoreProvider( sessionFactory );
 		return castProvider.getCache( ENTITY_STORE );
 	}
 
@@ -65,8 +82,8 @@ public class InfinispanTestHelper implements TestableGridDialect {
 		return InfinispanDatastoreProvider.class.cast( provider );
 	}
 
-	private static Cache getAssociationCache(SessionFactory sessionFactory) {
-		InfinispanDatastoreProvider castProvider = getProvider( sessionFactory );
+	private Cache getAssociationCache(SessionFactory sessionFactory) {
+		InfinispanDatastoreProvider castProvider = getDatastoreProvider( sessionFactory );
 		return castProvider.getCache( ASSOCIATION_STORE );
 	}
 

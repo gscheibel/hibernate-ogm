@@ -62,13 +62,30 @@ public class MongoDBTestHelper implements TestableGridDialect {
 		}
 	}
 
+	private MongoDBDatastoreProvider datastoreProvider;
+
+	public MongoDBTestHelper(MongoDBDatastoreProvider provider) {
+		datastoreProvider = provider;
+	}
+
+	public MongoDBTestHelper() {
+		super();
+	}
+
+	public MongoDBDatastoreProvider getDatastoreProvider(SessionFactory sessionFactory) {
+		if ( datastoreProvider == null ) {
+			return getProvider( sessionFactory );
+		}
+		return datastoreProvider;
+	}
+
 	private static boolean isNotNull(String mongoHostName) {
 		return mongoHostName != null && mongoHostName.length() > 0 && ! "null".equals( mongoHostName );
 	}
 
 	@Override
 	public boolean assertNumberOfEntities(int numberOfEntities, SessionFactory sessionFactory) {
-		MongoDBDatastoreProvider provider = MongoDBTestHelper.getProvider( sessionFactory );
+		MongoDBDatastoreProvider provider = getDatastoreProvider( sessionFactory );
 		AssociationStorage storage = provider.getAssociationStorage();
 		DB db = provider.getDatabase();
 		int count = 0;
@@ -93,7 +110,7 @@ public class MongoDBTestHelper implements TestableGridDialect {
 
 	@Override
 	public boolean assertNumberOfAssociations(int numberOfAssociations, SessionFactory sessionFactory) {
-		MongoDBDatastoreProvider provider = MongoDBTestHelper.getProvider( sessionFactory );
+		MongoDBDatastoreProvider provider = getDatastoreProvider( sessionFactory );
 		AssociationStorage assocStorage = provider.getAssociationStorage();
 		DB db = provider.getDatabase();
 
@@ -120,7 +137,7 @@ public class MongoDBTestHelper implements TestableGridDialect {
 
 	@Override
 	public Map<String, Object> extractEntityTuple(SessionFactory sessionFactory, EntityKey key) {
-		MongoDBDatastoreProvider provider = MongoDBTestHelper.getProvider( sessionFactory );
+		MongoDBDatastoreProvider provider = getDatastoreProvider( sessionFactory );
 		DBObject finder = new BasicDBObject( MongoDBDialect.ID_FIELDNAME, key.getColumnValues()[0] );
 		DBObject result = provider.getDatabase().getCollection( key.getTable() ).findOne( finder );
 		replaceIdentifierColumnName( result, key );
@@ -154,7 +171,7 @@ public class MongoDBTestHelper implements TestableGridDialect {
 
 	@Override
 	public void dropSchemaAndDatabase(SessionFactory sessionFactory) {
-		MongoDBDatastoreProvider provider = getProvider( sessionFactory );
+		MongoDBDatastoreProvider provider = getDatastoreProvider( sessionFactory );
 		try {
 			provider.getDatabase().dropDatabase();
 		}
